@@ -1,36 +1,16 @@
 import { siteConfig } from "@/config/site";
-import Link from "next/link";
+import { NavLink } from "./nav-link";
 
 export function FrontHeader() {
     return (
-        <header className="sticky top-0 z-40 w-full border-b bg-background">
+        <header className="sticky top-0 z-40 w-full border-b bg-background py-2">
             <div className="flex container justify-between ">
-                <Link href="/" className="grow">
-                    <h1>
-                        {siteConfig.name}
-                    </h1>
-                </Link>
+                <NavLink path="/" label={siteConfig.name} />
                 <div className="flex justify-end gap-5 grow">
-                    <Link href="/">
-                        <h1>
-                            Home
-                        </h1>
-                    </Link>
-                    <Link href="/">
-                        <h1>
-                            Shop
-                        </h1>
-                    </Link>
-                    <Link href="/">
-                        <h1>
-                            About
-                        </h1>
-                    </Link>
-                    <Link href="/">
-                        <h1>
-                            Contact
-                        </h1>
-                    </Link>
+                    <NavLink path="/" label="Home" />
+                    <NavLink path="/shop" label="Shop" />
+                    <NavLink path="/about" label="About" />
+                    <NavLink path="/contact" label="Contact" />
                 </div>
             </div>
         </header>
