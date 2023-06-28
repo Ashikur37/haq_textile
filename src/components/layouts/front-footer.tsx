@@ -5,4 +5,5 @@ export function FrontFooter() {
         <div>
             <ThemeToggle />
         </div>
-        )}
+    )
+}

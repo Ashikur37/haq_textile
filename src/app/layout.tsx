@@ -2,9 +2,10 @@ import { ThemeProvider } from '@/components/theme-provider'
 import './globals.css'
 import { TailwindIndicator } from '@/components/tailwind-indicator'
 import { Metadata } from 'next/types'
+import { siteMetaData } from '@/lib/seo/meta-data'
 
 
-export const metadata: Metadata = 
+export const metadata: Metadata =siteMetaData;
 
 export default function RootLayout({
   children,

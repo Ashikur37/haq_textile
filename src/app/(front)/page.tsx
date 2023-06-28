@@ -5,9 +5,7 @@ export default async function Home() {
 
   return (
    <>
-   {time}
-   <br/>
-    <Button/>
+    Homepage
    </>
   )
 }
