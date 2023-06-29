@@ -22,8 +22,27 @@ export default function AdminSidebar() {
             <input type="search" placeholder="Search" className={cn("text-base bg-transparent w-full text-white focus:outline-none", !open && "hidden")} />
         </div>
         <ul className="pt-2">
-           <SidebarLink label="Dashboard" open={open}/>
-            
+            <SidebarLink label="Product" open={open} subMenus={[
+                {
+                    label: "Product List",
+                    link: "/admin/products"
+                },
+                {
+                    label: "Add Product",
+                    link: "/admin/products/add"
+                }
+            ]} />
+            <SidebarLink label="Image" open={open} subMenus={[
+                {
+                    label: "Image List",
+                    link: "/admin/images"
+                },
+                {
+                    label: "Add Image",
+                    link: "/admin/images/add"
+                }
+            ]} />
+
         </ul>
     </div>
 }
