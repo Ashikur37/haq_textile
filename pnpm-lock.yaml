@@ -32,21 +32,18 @@ dependencies:
   next:
     specifier: 13.4.7
     version: 13.4.7(@babel/core@7.22.5)(react-dom@18.2.0)(react@18.2.0)
+  next-cloudinary:
+    specifier: ^4.13.0
+    version: 4.13.0(next@13.4.7)(react@18.2.0)
   next-themes:
     specifier: ^0.2.1
     version: 0.2.1(next@13.4.7)(react-dom@18.2.0)(react@18.2.0)
   react:
     specifier: 18.2.0
     version: 18.2.0
-  react-cropper:
-    specifier: ^2.3.3
-    version: 2.3.3(react@18.2.0)
   react-dom:
     specifier: 18.2.0
     version: 18.2.0(react@18.2.0)
-  react-dropzone:
-    specifier: ^14.2.3
-    version: 14.2.3(react@18.2.0)
   react-hook-form:
     specifier: ^7.45.1
     version: 7.45.1(react@18.2.0)
@@ -56,9 +53,6 @@ dependencies:
   tailwind-merge:
     specifier: ^1.13.2
     version: 1.13.2
-  uploadthing:
-    specifier: ^5.1.0
-    version: 5.1.0(zod@3.21.4)
   zod:
     specifier: ^3.21.4
     version: 3.21.4
@@ -326,6 +320,29 @@ packages:
       '@babel/helper-string-parser': 7.22.5
       '@babel/helper-validator-identifier': 7.22.5
       to-fast-properties: 2.0.0
+
+  /@cloudinary-util/url-loader@3.8.1:
+    resolution: {integrity: sha512-cBAPiAulWIG5M6HkFDvHhWVo0BJfWnZrr3jz7mIvdVrhKJl3CgK6p9kzSWKC62Ib9SUHMzKBC9R2B8jn+ZCBKA==}
+    dependencies:
+      '@cloudinary-util/util': 2.0.1
+      '@cloudinary/url-gen': 1.10.1
+    dev: false
+
+  /@cloudinary-util/util@2.0.1:
+    resolution: {integrity: sha512-d2imgUjYTLjv8ZhZPMAts/uPbMvIE71X4I/5hwdY/7vM4BuFQoJMSyq+h2pW1z1MyGG9BOWBm70vp082lSrbEQ==}
+    dev: false
+
+  /@cloudinary/transformation-builder-sdk@1.2.9:
+    resolution: {integrity: sha512-qbLAfKhX4hy5tFPv4erpxdBT9x0GZgzDuMeDBIygqutNJTeB7lNuEZedf8X++0ZinkDccrJwXzDJty60MEfyHw==}
+    dependencies:
+      '@cloudinary/url-gen': 1.10.1
+    dev: false
+
+  /@cloudinary/url-gen@1.10.1:
+    resolution: {integrity: sha512-6pBmapnL7G231NbNWhKbi+08HcpNASci7M3OmZWaUCQWUfdmo3au27HT3Zqg9NMsisfyer3t7o0RXzPQ4XlmMg==}
+    dependencies:
+      '@cloudinary/transformation-builder-sdk': 1.2.9
+    dev: false
 
   /@esbuild-kit/core-utils@3.1.0:
     resolution: {integrity: sha512-Uuk8RpCg/7fdHSceR1M6XbSZFSuMrxcePFuGgyvsBn+u339dk5OeL4jv2EojwTN2st/unJGsVm4qHWjWNmJ/tw==}
@@ -1913,10 +1930,6 @@ packages:
     engines: {node: '>= 0.6'}
     dev: false
 
-  /cropperjs@1.5.13:
-    resolution: {integrity: sha512-by7jKAo73y5/Do0K6sxdTKHgndY0NMjG2bEdgeJxycbcmHuCiMXqw8sxy5C5Y5WTOTcDGmbT7Sr5CgKOXR06OA==}
-    dev: false
-
   /cross-spawn@7.0.3:
     resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==}
     engines: {node: '>= 8'}
@@ -3422,6 +3435,19 @@ packages:
       uuid: 8.3.2
     dev: false
 
+  /next-cloudinary@4.13.0(next@13.4.7)(react@18.2.0):
+    resolution: {integrity: sha512-tjlsJdJLpN+D/714mH1Vqnca3t1dJeNxAqf1gw+aAcA7zAVax4XMeBznBO01UqQH2nDvfb2PWmTttOwEYhu5vQ==}
+    peerDependencies:
+      next: ^12 || ^13
+      react: ^17 || ^18
+    dependencies:
+      '@cloudinary-util/url-loader': 3.8.1
+      '@cloudinary-util/util': 2.0.1
+      '@cloudinary/url-gen': 1.10.1
+      next: 13.4.7(@babel/core@7.22.5)(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
+    dev: false
+
   /next-themes@0.2.1(next@13.4.7)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-B+AKNfYNIzh0vqQQKqQItTS8evEouKD7H5Hj3kmuPERwddR2TxvDSFZuTj6T7Jfn1oyeUyJMydPl1Bkxkh0W7A==}
     peerDependencies:
@@ -3889,15 +3915,6 @@ packages:
   /queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
     dev: true
-
-  /react-cropper@2.3.3(react@18.2.0):
-    resolution: {integrity: sha512-zghiEYkUb41kqtu+2jpX2Ntigf+Jj1dF9ew4lAobPzI2adaPE31z0p+5TcWngK6TvmWQUwK3lj4G+NDh1PDQ1w==}
-    peerDependencies:
-      react: '>=17.0.2'
-    dependencies:
-      cropperjs: 1.5.13
-      react: 18.2.0
-    dev: false
 
   /react-dom@18.2.0(react@18.2.0):
     resolution: {integrity: sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==}
