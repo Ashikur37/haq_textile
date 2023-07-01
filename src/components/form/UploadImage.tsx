@@ -35,7 +35,11 @@ export default function UploadIamge({
         <PreviewImage clearImage={clearImage} imageUrl={imageUrl} />
       ) : (
         <div className="upload_btn">
-          <CldUploadButton uploadPreset="images" onUpload={upload}>
+          <CldUploadButton options={
+            {
+              // cropping:true
+            }
+          } uploadPreset="images" onUpload={upload}>
             <ImageUploadButton size={size} />
           </CldUploadButton>
         </div>
