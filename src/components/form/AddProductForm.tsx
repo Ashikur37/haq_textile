@@ -1,24 +1,73 @@
 "use client"
 import { ProductSchema } from "@/lib/validations/product";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Product } from "@prisma/client";
 import { useForm } from "react-hook-form";
-export default function AddProductForm(){
+import { Button } from "../ui/button";
+import { useState, useTransition } from "react";
+import { addProductAction } from "@/app/_actions/product";
+import { z } from "zod"
+import { FormItem, Input, Textarea } from "../ui/form";
+import UploadIamge from "./UploadImage";
+import { useRouter } from "next/navigation";
+
+export default function AddProductForm() {
+    const router = useRouter();
+    const [isPending, startTransition] = useTransition();
+    const [image, setImage] = useState("");
     const { register, handleSubmit,
         formState: { errors }
-      } = useForm<Product>({
+    } = useForm<z.infer<typeof ProductSchema>>({
         resolver: zodResolver(ProductSchema)
-      });
-    
-      const onSubmit = async (data:Product) => {
-        // await addBoard(data);
+    });
+    const onSubmit = async (data: z.infer<typeof ProductSchema>) => {
+        startTransition(async () => {
+            await addProductAction({
+                ...data,
+                image
+            });
+            router.push('/admin/products');
+        })
     }
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-          <label>Title</label>
-          <input type="text" {...register('name')} />
-          {errors.name?.message && <p>{errors.name?.message}</p>}
-          <input type="submit" />
+            <FormItem label="Name" message={errors.name?.message} >
+                <Input
+                    aria-invalid={!!errors.name}
+                    placeholder="Type product name here."
+                    {...register("name")}
+                />
+            </FormItem>
+            <FormItem label="Price From" message={errors.price_from?.message} >
+                <Input
+                    type="number"
+                    aria-invalid={!!errors.price_from}
+                    placeholder="Type product price from here."
+                    {...register("price_from", {valueAsNumber: true})}
+                />
+            </FormItem>
+            <FormItem label="Price To" message={errors.price_to?.message} >
+                <Input
+                    type="number"
+                    aria-invalid={!!errors.price_to}
+                    placeholder="Type product price to here."
+                    {...register("price_to", {valueAsNumber: true})}
+                />
+            </FormItem>
+            <FormItem label="Description" message={errors.description?.message} >
+                <Textarea
+                    aria-invalid={!!errors.description}
+                    placeholder="Description"
+                    {...register("description")}
+                />
+            </FormItem>
+            <UploadIamge
+                uploadImage={setImage}
+                oldUrl=""
+                size="400X400"
+            />
+            <Button variant={"destructive"} disabled={isPending}>
+                Add Product
+            </Button>
         </form>
-      )
+    )
 }
