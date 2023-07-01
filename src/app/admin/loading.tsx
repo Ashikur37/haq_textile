@@ -1,9 +1,10 @@
+import { Skeleton } from '@/components/ui/skeleton'
 import React from 'react'
 
 type Props = {}
 
 export default function loading({}: Props) {
   return (
-    <div>loading</div>
+    <Skeleton className="h-6 w-20" />
   )
 }

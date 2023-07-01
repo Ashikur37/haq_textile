@@ -5,5 +5,5 @@ export const ProductSchema = z.object({
     price_to:z.number(),
     // image:z.string(),
     description:z.string(),
-    featured:z.boolean()
+    // featured:z.boolean()
   });

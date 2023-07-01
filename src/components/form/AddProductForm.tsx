@@ -9,6 +9,7 @@ import { z } from "zod"
 import { FormItem, Input, Textarea } from "../ui/form";
 import UploadIamge from "./UploadImage";
 import { useRouter } from "next/navigation";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function AddProductForm() {
     const router = useRouter();
@@ -28,46 +29,45 @@ export default function AddProductForm() {
             router.push('/admin/products');
         })
     }
-    return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <FormItem label="Name" message={errors.name?.message} >
-                <Input
-                    aria-invalid={!!errors.name}
-                    placeholder="Type product name here."
-                    {...register("name")}
-                />
-            </FormItem>
-            <FormItem label="Price From" message={errors.price_from?.message} >
-                <Input
-                    type="number"
-                    aria-invalid={!!errors.price_from}
-                    placeholder="Type product price from here."
-                    {...register("price_from", {valueAsNumber: true})}
-                />
-            </FormItem>
-            <FormItem label="Price To" message={errors.price_to?.message} >
-                <Input
-                    type="number"
-                    aria-invalid={!!errors.price_to}
-                    placeholder="Type product price to here."
-                    {...register("price_to", {valueAsNumber: true})}
-                />
-            </FormItem>
-            <FormItem label="Description" message={errors.description?.message} >
-                <Textarea
-                    aria-invalid={!!errors.description}
-                    placeholder="Description"
-                    {...register("description")}
-                />
-            </FormItem>
-            <UploadIamge
-                uploadImage={setImage}
-                oldUrl=""
-                size="400X400"
+    return isPending ? <Skeleton className="h-6 w-20" /> : <form onSubmit={handleSubmit(onSubmit)}>
+        <FormItem label="Name" message={errors.name?.message} >
+            <Input
+                aria-invalid={!!errors.name}
+                placeholder="Type product name here."
+                {...register("name")}
             />
-            <Button variant={"destructive"} disabled={isPending}>
-                Add Product
-            </Button>
-        </form>
-    )
+        </FormItem>
+        <FormItem label="Price From" message={errors.price_from?.message} >
+            <Input
+                type="number"
+                aria-invalid={!!errors.price_from}
+                placeholder="Type product price from here."
+                {...register("price_from", { valueAsNumber: true })}
+            />
+        </FormItem>
+        <FormItem label="Price To" message={errors.price_to?.message} >
+            <Input
+                type="number"
+                aria-invalid={!!errors.price_to}
+                placeholder="Type product price to here."
+                {...register("price_to", { valueAsNumber: true })}
+            />
+        </FormItem>
+        <FormItem label="Description" message={errors.description?.message} >
+            <Textarea
+                aria-invalid={!!errors.description}
+                placeholder="Description"
+                {...register("description")}
+            />
+        </FormItem>
+        <UploadIamge
+            uploadImage={setImage}
+            oldUrl=""
+            size="400X400"
+        />
+        <Button variant={"destructive"} disabled={isPending}>
+            Add Product
+        </Button>
+    </form>
+
 }

@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache"
 import { z } from "zod"
-
+import slug from 'slug';
 import { deleteImageFromCloudinary } from "@/lib/cloudinary"
 import { db } from "@/lib/db"
 import { ProductSchema } from "@/lib/validations/product"
@@ -18,7 +18,7 @@ export async function addProductAction(input:AddProductActionType ) {
       price_from: input.price_from,
       price_to: input.price_to,
       description: input.description,
-      featured: input.featured ?? false,
+      slug:slug(input.name)
     },
   })
   revalidatePath("/admin/products")
