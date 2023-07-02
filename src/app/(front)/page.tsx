@@ -1,11 +1,15 @@
-import Button from "@/Button";
+import Hero from "@/components/hero";
+import { db } from "@/lib/db";
 
 export default async function Home() {
-  const time=new Date().toLocaleTimeString();
-
+  const images=await db.image.findMany({
+    orderBy:{
+     id:"desc" 
+    }
+  })
   return (
    <>
-    Homepage
+    <Hero images={images}/>
    </>
   )
 }

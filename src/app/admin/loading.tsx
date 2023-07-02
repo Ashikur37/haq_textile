@@ -5,6 +5,6 @@ type Props = {}
 
 export default function loading({}: Props) {
   return (
-    <Skeleton className="h-6 w-20" />
+    <Skeleton className="h-6 container" />
   )
 }

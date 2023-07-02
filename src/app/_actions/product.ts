@@ -38,3 +38,14 @@ export async function deleteProductAction(id: number) {
   })
   revalidatePath("/admin/products")
 }
+export async function featureProductAction(id:number,featured:boolean){
+  await db.product.update({
+    data:{
+      featured
+    },
+    where:{
+      id
+    }
+  })
+  revalidatePath("/admin/products")
+}

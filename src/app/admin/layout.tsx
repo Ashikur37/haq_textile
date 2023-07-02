@@ -7,7 +7,7 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
     return (
         <div className="flex">
             <AdminSidebar />
-            <div className="w-3/10 px-4 py-4">
+            <div className="container px-4 py-4">
                 {children}
             </div>
         </div>
