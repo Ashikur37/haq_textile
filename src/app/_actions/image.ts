@@ -13,6 +13,7 @@ export async function addImageAction(input: z.infer<typeof imageSchema>) {
     },
   })
   revalidatePath("/admin/images")
+  revalidatePath("/")
   return res.image;
 }
 export async function deleteImageAction(id:number) {

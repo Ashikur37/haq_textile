@@ -48,4 +48,5 @@ export async function featureProductAction(id:number,featured:boolean){
     }
   })
   revalidatePath("/admin/products")
+  revalidatePath("/")
 }

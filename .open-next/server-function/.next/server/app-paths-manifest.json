@@ -1,0 +1,12 @@
+{
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/(front)/page": "app/(front)/page.js",
+  "/(front)/shop/page": "app/(front)/shop/page.js",
+  "/admin/products/page": "app/admin/products/page.js",
+  "/(front)/contact/page": "app/(front)/contact/page.js",
+  "/(front)/about/page": "app/(front)/about/page.js",
+  "/admin/images/page": "app/admin/images/page.js",
+  "/admin/images/add/page": "app/admin/images/add/page.js",
+  "/(front)/product/[slug]/page": "app/(front)/product/[slug]/page.js",
+  "/admin/products/add/page": "app/admin/products/add/page.js"
+}
