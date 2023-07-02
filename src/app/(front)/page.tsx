@@ -1,4 +1,5 @@
-import Hero from "@/components/hero";
+import FeatureProducts from "@/components/homepage/feature-products";
+import Hero from "@/components/homepage/hero";
 import { db } from "@/lib/db";
 
 export default async function Home() {
@@ -7,9 +8,15 @@ export default async function Home() {
      id:"desc" 
     }
   })
+  const featureProducts=await db.product.findMany({
+    where:{
+      featured:true
+    }
+  });
   return (
    <>
     <Hero images={images}/>
+    <FeatureProducts products={featureProducts}/>
    </>
   )
 }

@@ -1,7 +1,7 @@
 "use client"
 
 import { Image } from "@prisma/client"
-import { Icons } from "./icons"
+import { Icons } from "../icons"
 
 interface HeroProps {
     images: Image[]
@@ -11,7 +11,7 @@ export default function Hero({ images }: HeroProps) {
         className="relative overflow-hidden bg-cover bg-no-repeat "
         style={{
             backgroundImage: `url(${images[0]?.image})`,
-            height: "700px",
+            height: "100vh",
             backgroundPosition: "center center"
         }}
     >
@@ -21,12 +21,13 @@ export default function Hero({ images }: HeroProps) {
         <div className="flex items-center justify-center flex-col gap-2 h-full ">
             <h1 className="text-white font-bold text-9xl z-50">
                 HAQUE TEXTILE
+                
             </h1>
             <h3 className="text-white  text-3xl mt-12 z-50">
                 WEAR YOUR DRESS
             </h3>
-            <div className="bg-white z-50 rounded-full p-2 cursor-pointer" >
-                    <Icons.chevronDown className="animate-bounce h-6"/>
+            <div className="bg-white z-50 rounded-full h-[] cursor-pointer" >
+                    <Icons.chevronDown className="animate-bounce"/>
             </div>
         </div>
 
