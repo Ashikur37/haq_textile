@@ -2,6 +2,7 @@
 
 import { Image } from "@prisma/client"
 import { Icons } from "../icons"
+import { Balancer } from "react-wrap-balancer"
 
 interface HeroProps {
     images: Image[]
@@ -19,11 +20,12 @@ export default function Hero({ images }: HeroProps) {
 
         </div>
         <div className="flex items-center justify-center flex-col gap-2 h-full ">
-            <h1 className="text-white font-bold text-9xl z-50">
+            <h1 className="text-white font-bold text-8xl z-50">
+                <Balancer>
                 HAQUE TEXTILE
-                
+                </Balancer>
             </h1>
-            <h3 className="text-white  text-3xl mt-12 z-50">
+            <h3 className="text-white  text-3xl mt-12 z-50  tracking-widest">
                 WEAR YOUR DRESS
             </h3>
             <div className="bg-white z-50 rounded-full h-[] cursor-pointer" >
