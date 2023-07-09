@@ -16,15 +16,115 @@ model Image {
   serial Int     @default(0)
 }
 
+model Category {
+  id        Int                    @id @default(autoincrement())
+  name      String
+  slug      String                 @unique
+  parent_id Int?
+  parent    Category?              @relation("ParentChilds", fields: [parent_id], references: [id])
+  childs    Category[]             @relation("ParentChilds")
+  products  CategoriesOnProducts[]
+  createdAt DateTime               @default(now()) @map(name: "created_at")
+  updatedAt DateTime               @updatedAt @map(name: "updated_at")
+}
+
 model Product {
-  id Int @id @default(autoincrement())
-  name String
-  slug String @unique
-  price_from Decimal
-  price_to Decimal
-  image  String?
+  id          Int                    @id @default(autoincrement())
+  name        String
+  slug        String                 @unique
+  image       String?
   description String
-  featured Boolean @default(false)
+  min_order   Int                    @default(1)
+  images      ProductImage[]
+  featured    Boolean                @default(false)
+  categories  CategoriesOnProducts[]
+  colors      ColorsOnProducts[]
+  prices      Price[]
+  sizes       SizesOnProducts[]
+  times       LeadTime[]
+}
+
+model LeadTime {
+  id        Int     @id @default(autoincrement())
+  quantity  String
+  time      String
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+}
+
+model Price {
+  id        Int     @id @default(autoincrement())
+  quantity  Int
+  unitPrice Float
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+}
+
+model CategoriesOnProducts {
+  product    Product  @relation(fields: [productId], references: [id])
+  productId  Int // relation scalar field (used in the `@relation` attribute above)
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId Int // relation scalar field (used in the `@relation` attribute above)
+
+  @@id([productId, categoryId])
+}
+
+model ColorsOnProducts {
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int // relation scalar field (used in the `@relation` attribute above)
+  color     Color   @relation(fields: [colorId], references: [id])
+  colorId   Int // relation scalar field (used in the `@relation` attribute above)
+
+  @@id([productId, colorId])
+}
+
+model SizesOnProducts {
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int // relation scalar field (used in the `@relation` attribute above)
+  size      Size    @relation(fields: [sizeId], references: [id])
+  sizeId    Int // relation scalar field (used in the `@relation` attribute above)
+
+  @@id([productId, sizeId])
+}
+
+model Setting {
+  id            Int     @id @default(1)
+  company_name  String
+  logo          String?
+  contact_no    String?
+  contact_email String?
+  facebook      String?
+  youtube       String?
+  address       String?
+  theme_color   String?
+}
+
+model Color {
+  id               Int                @id @default(autoincrement())
+  name             String
+  extra            Float              @default(0.0)
+  code             String
+  createdAt        DateTime           @default(now()) @map(name: "created_at")
+  updatedAt        DateTime           @updatedAt @map(name: "updated_at")
+  ColorsOnProducts ColorsOnProducts[]
+}
+
+model Size {
+  id              Int               @id @default(autoincrement())
+  name            String
+  extra           Float             @default(0.0)
+  createdAt       DateTime          @default(now()) @map(name: "created_at")
+  updatedAt       DateTime          @updatedAt @map(name: "updated_at")
+  SizesOnProducts SizesOnProducts[]
+}
+
+model ProductImage {
+  id        Int      @id @default(autoincrement())
+  image     String?
+  productId Int
+  product   Product? @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
 }
 
 model Account {
