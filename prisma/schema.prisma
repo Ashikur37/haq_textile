@@ -42,6 +42,7 @@ model Product {
   prices      Price[]
   sizes       SizesOnProducts[]
   times       LeadTime[]
+
 }
 
 model LeadTime {

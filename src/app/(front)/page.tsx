@@ -11,8 +11,12 @@ export default async function Home() {
   const featureProducts=await db.product.findMany({
     where:{
       featured:true
+    },
+    include:{
+      prices:true
     }
   });
+  
   return (
    <>
     <Hero images={images}/>

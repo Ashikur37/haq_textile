@@ -1,3 +1,4 @@
+import { Price } from "@prisma/client";
 import clsx, { ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -17,3 +18,10 @@ export function cn(...inputs: ClassValue[]) {
       sizeType === "accurate" ? accurateSizes[i] ?? "Bytest" : sizes[i] ?? "Bytes"
     }`
   }
+
+export function getMinPrice(prices:Price[]){
+    return Math.min(...prices.map(price=>price.unitPrice))
+}
+export function getMaxPrice(prices:Price[]){
+    return Math.max(...prices.map(price=>price.unitPrice))
+}

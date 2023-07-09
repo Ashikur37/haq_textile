@@ -1,6 +1,6 @@
 "use client"
 import React, { useRef, useState } from "react";
-import { Product } from "@prisma/client"
+import { Product, Price } from "@prisma/client"
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper";
 // Import Swiper styles
@@ -8,9 +8,12 @@ import "swiper/css";
 import "swiper/css/pagination";
 import Image from "next/image";
 import Link from "next/link";
-
+import { getMaxPrice, getMinPrice } from "@/lib/utils";
+interface ProductWithPrices extends Product {
+    prices: Price[];
+}
 interface FeatureProductsProps {
-    products: Product[]
+    products: ProductWithPrices[]
 }
 export default function FeatureProducts({ products }: FeatureProductsProps) {
     return <div className="container flex flex-col justify-center">
@@ -36,9 +39,7 @@ export default function FeatureProducts({ products }: FeatureProductsProps) {
                         width: 1024,
                         slidesPerView: 3,
                     }
-
-                }
-                }
+                }}
                 pagination={{
                     clickable: true,
                 }}
@@ -57,8 +58,8 @@ export default function FeatureProducts({ products }: FeatureProductsProps) {
                                 </span>
                                 <div className="flex justify-between mt-2 w-full">
                                     <span >
-                                        ${product.price_from.toString()}-
-                                        ${product.price_to.toString()}
+                                        ${getMinPrice(product.prices)}-
+                                        ${getMaxPrice(product.prices)}
                                     </span>
                                     <div className="flex items-center space-x-1">
                                         <svg className="w-4 h-4 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
@@ -83,9 +84,7 @@ export default function FeatureProducts({ products }: FeatureProductsProps) {
 
                     </div>)
                 }
-
             </Swiper>
         </div>
-
     </div>
 }
