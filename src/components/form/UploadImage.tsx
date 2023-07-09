@@ -5,10 +5,10 @@ import { useState } from "react";
 import PreviewImage from "@/components/form/PreviewImage";
 import ImageUploadButton from "@/components/form/ImageUploadButton";
 
-interface UploadImageProps{
-    uploadImage:(val:string)=>void,
-    oldUrl:string,
-    size:string
+interface UploadImageProps {
+  uploadImage: (val: string) => void,
+  oldUrl: string,
+  size: string
 }
 export default function UploadIamge({
   uploadImage,
@@ -18,9 +18,9 @@ export default function UploadIamge({
   const [imageUrl, setImageUrl] = useState<string>(oldUrl);
   const upload = (data: any, err: any) => {
     // if (!err) {
-      console.log(data);
-      setImageUrl(data.info.secure_url);
-      uploadImage(data.info.secure_url);
+    console.log(data);
+    setImageUrl(data.info.secure_url);
+    uploadImage(data.info.secure_url);
     // }
     console.log(err);
   };

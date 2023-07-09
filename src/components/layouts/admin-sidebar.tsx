@@ -42,6 +42,36 @@ export default function AdminSidebar() {
                     link: "/admin/images/add"
                 }
             ]} />
+            <SidebarLink label="Category" open={open} subMenus={[
+                {
+                    label: "Category List",
+                    link: "/admin/categories"
+                },
+                {
+                    label: "Add Category",
+                    link: "/admin/categories/add"
+                }
+            ]} />
+            <SidebarLink label="Size" open={open} subMenus={[
+                {
+                    label: "Size List",
+                    link: "/admin/sizes"
+                },
+                {
+                    label: "Add Image",
+                    link: "/admin/sizes/add"
+                }
+            ]} />
+            <SidebarLink label="Color" open={open} subMenus={[
+                {
+                    label: "Color List",
+                    link: "/admin/colors"
+                },
+                {
+                    label: "Add Image",
+                    link: "/admin/colors/add"
+                }
+            ]} />
 
         </ul>
     </div>

@@ -3,7 +3,6 @@ import * as z from "zod"
 export const categorySchema = z
   .object({
     name: z.string().min(1),
-    slug: z.string().min(1),
     parent_id: z.number().int().positive().optional(),
   })
 //   .refine(

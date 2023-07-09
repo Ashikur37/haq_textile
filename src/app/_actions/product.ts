@@ -15,8 +15,6 @@ export async function addProductAction(input:AddProductActionType ) {
     data: {
       name: input.name,
       image: input.image,
-      price_from: input.price_from,
-      price_to: input.price_to,
       description: input.description,
       slug:slug(input.name)
     },
