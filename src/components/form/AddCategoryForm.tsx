@@ -10,8 +10,15 @@ import { useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
 import { categorySchema } from "@/lib/validations/category";
 import { addcategoryAction } from "@/app/_actions/category";
+import { Category } from "@prisma/client";
 
-export default function AddCategoryForm() {
+interface AddCategoryFormProps{
+    categories:{
+        id:number,
+        name:string
+    }[]
+}
+export default function AddCategoryForm({categories}:AddCategoryFormProps) {
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
     const { register, handleSubmit,
