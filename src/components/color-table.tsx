@@ -1,43 +1,44 @@
 "use client"
-import { Category } from "@prisma/client"
+import { Color } from "@prisma/client"
 import { Button } from "@/components/ui/button";
 import { useTransition } from "react";
 import { toast } from "sonner";
-import { deleteCategoryAction } from "@/app/_actions/category";
+import { deleteColorAction } from "@/app/_actions/color";
 import { Skeleton } from "./ui/skeleton";
 import { TableCell, TableHead, Table, TableRow } from "./ui/table";
-interface CategoryTableProps {
-    categories: (Category & { parent: Category | null })[];
+import { cn } from "@/lib/utils";
+interface ColorTableProps {
+    colors: Color[]
 }
-export const CategoryTable = ({ categories }: CategoryTableProps) => {
+export const ColorTable = ({ colors }: ColorTableProps) => {
     const [isPending, startTransition] = useTransition();
-    const deleteCategory = (id: number) => {
+    const deleteColor = (id: number) => {
         startTransition(async () => {
-            await deleteCategoryAction(id);
-            toast.success("Category deleted");
+            await deleteColorAction(id);
+            toast.success("Color deleted");
         })
     }
     return <Table>
         <thead className="[&_tr]:border-b">
             <TableRow>
                 <TableHead>Name</TableHead>
-                <TableHead>Parent</TableHead>
+                <TableHead>Color</TableHead>
                 <TableHead>Action</TableHead>
             </TableRow>
         </thead>
         <tbody className="[&_tr:last-child]:border-0">
             {
-                isPending ? <Skeleton className="h-6 w-20" /> : categories.map((category) => <TableRow key={category.id}>
+                isPending ? <Skeleton className="h-6 w-20" /> : colors.map((color) => <TableRow key={color.id}>
                     <TableCell>
-                        {category.name}
+                        {color.name}
                     </TableCell>
                     <TableCell>
-                        {category.parent?.name}
+                        <div className={"h-5 w-5 rounded-full"} style={{ backgroundColor: color.code }}></div>
                     </TableCell>
                     <TableCell>
                         <Button
                             variant={"outline"}
-                            onClick={() => deleteCategory(category.id)}
+                            onClick={() => deleteColor(color.id)}
                         >
                             Delete
                         </Button>
