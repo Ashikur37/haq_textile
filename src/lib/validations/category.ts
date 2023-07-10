@@ -4,6 +4,10 @@ export const categorySchema = z
   .object({
     name: z.string().min(1),
     parent_id: z.number().int().positive().optional(),
+    category:z.object({
+      value:z.number().int().positive().optional(),
+      label:z.string().min(1).optional()
+    })
   })
 //   .refine(
 //     (data) => {

@@ -5,22 +5,21 @@ import { Button } from "../ui/button";
 import { useState, useTransition } from "react";
 import { z } from "zod"
 import { FormItem, Input, Textarea } from "../ui/form";
-import UploadIamge from "./UploadImage";
 import { useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
 import { categorySchema } from "@/lib/validations/category";
 import { addcategoryAction } from "@/app/_actions/category";
-import { Category } from "@prisma/client";
-
-interface AddCategoryFormProps{
-    categories:{
-        id:number,
-        name:string
+import Select from 'react-select'
+interface AddCategoryFormProps {
+    categories: {
+        id: number,
+        name: string
     }[]
 }
-export default function AddCategoryForm({categories}:AddCategoryFormProps) {
+export default function AddCategoryForm({ categories }: AddCategoryFormProps) {
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
+    const [parentId, setParentId] = useState<number | null>(null)
     const { register, handleSubmit,
         formState: { errors }
     } = useForm<z.infer<typeof categorySchema>>({
@@ -28,7 +27,10 @@ export default function AddCategoryForm({categories}:AddCategoryFormProps) {
     });
     const onSubmit = async (data: z.infer<typeof categorySchema>) => {
         startTransition(async () => {
-            await addcategoryAction(data);
+            await addcategoryAction({
+                ...data,
+                parent_id: parentId ?? undefined
+            });
             router.push('/admin/categories');
         })
     }
@@ -38,6 +40,24 @@ export default function AddCategoryForm({categories}:AddCategoryFormProps) {
                 aria-invalid={!!errors.name}
                 placeholder="Type Category name here."
                 {...register("name")}
+            />
+        </FormItem>
+        <FormItem label="Parent Category" message={errors.parent_id?.message} >
+            <Select
+            {...register('category')}
+                options={
+                    [
+                        {
+                            value: null,
+                            label: "Select parent category"
+                        },
+                        ...categories.map(category => ({
+                            value: category.id,
+                            label: category.name
+                        }))
+                    ]
+                }
+                onChange={cat => setParentId(cat?.value!)}
             />
         </FormItem>
         <Button variant={"destructive"} disabled={isPending}>

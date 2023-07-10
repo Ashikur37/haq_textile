@@ -37,7 +37,7 @@ export default function AddProductForm() {
                 {...register("name")}
             />
         </FormItem>
-        <FormItem label="Price From" message={errors.price_from?.message} >
+        {/* <FormItem label="Price From" message={errors.price_from?.message} >
             <Input
                 type="number"
                 aria-invalid={!!errors.price_from}
@@ -52,7 +52,7 @@ export default function AddProductForm() {
                 placeholder="Type product price to here."
                 {...register("price_to", { valueAsNumber: true })}
             />
-        </FormItem>
+        </FormItem> */}
         <FormItem label="Description" message={errors.description?.message} >
             <Textarea
                 aria-invalid={!!errors.description}
