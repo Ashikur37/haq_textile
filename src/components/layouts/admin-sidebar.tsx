@@ -58,7 +58,7 @@ export default function AdminSidebar() {
                     link: "/admin/sizes"
                 },
                 {
-                    label: "Add Image",
+                    label: "Add Size",
                     link: "/admin/sizes/add"
                 }
             ]} />
@@ -68,7 +68,7 @@ export default function AdminSidebar() {
                     link: "/admin/colors"
                 },
                 {
-                    label: "Add Image",
+                    label: "Add Color",
                     link: "/admin/colors/add"
                 }
             ]} />
