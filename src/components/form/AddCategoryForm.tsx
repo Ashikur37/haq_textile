@@ -44,7 +44,7 @@ export default function AddCategoryForm({ categories }: AddCategoryFormProps) {
         </FormItem>
         <FormItem label="Parent Category" message={errors.parent_id?.message} >
             <Select
-            {...register('category')}
+            
                 options={
                     [
                         {

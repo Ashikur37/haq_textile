@@ -29,8 +29,8 @@ export default function ImageUploadButton({ size }: ImageUploadButtonProps) {
               />
             </svg>
           </span>
-          <span className="size">{size}</span>
-          <span className="upload_text">Click or drag to upload</span>
+          <span className="size dark:text-white">{size}</span>
+          <span className="upload_text dark:text-white">Click or drag to upload</span>
         </div>
       </div>
     </div>

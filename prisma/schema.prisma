@@ -42,7 +42,6 @@ model Product {
   prices      Price[]
   sizes       SizesOnProducts[]
   times       LeadTime[]
-
 }
 
 model LeadTime {
@@ -55,7 +54,7 @@ model LeadTime {
 
 model Price {
   id        Int     @id @default(autoincrement())
-  quantity  Int
+  label  String
   unitPrice Float
   product   Product @relation(fields: [productId], references: [id])
   productId Int
@@ -73,6 +72,7 @@ model CategoriesOnProducts {
 model ColorsOnProducts {
   product   Product @relation(fields: [productId], references: [id])
   productId Int // relation scalar field (used in the `@relation` attribute above)
+  extra     Float   @default(0.0)
   color     Color   @relation(fields: [colorId], references: [id])
   colorId   Int // relation scalar field (used in the `@relation` attribute above)
 
@@ -84,6 +84,7 @@ model SizesOnProducts {
   productId Int // relation scalar field (used in the `@relation` attribute above)
   size      Size    @relation(fields: [sizeId], references: [id])
   sizeId    Int // relation scalar field (used in the `@relation` attribute above)
+  extra     Float   @default(0.0)
 
   @@id([productId, sizeId])
 }
@@ -103,7 +104,6 @@ model Setting {
 model Color {
   id               Int                @id @default(autoincrement())
   name             String
-  extra            Float              @default(0.0)
   code             String
   createdAt        DateTime           @default(now()) @map(name: "created_at")
   updatedAt        DateTime           @updatedAt @map(name: "updated_at")
@@ -113,7 +113,6 @@ model Color {
 model Size {
   id              Int               @id @default(autoincrement())
   name            String
-  extra           Float             @default(0.0)
   createdAt       DateTime          @default(now()) @map(name: "created_at")
   updatedAt       DateTime          @updatedAt @map(name: "updated_at")
   SizesOnProducts SizesOnProducts[]
