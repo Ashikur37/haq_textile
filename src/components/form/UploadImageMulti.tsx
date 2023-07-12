@@ -17,6 +17,7 @@ export default function UploadIamgeMulti({
 }: UploadIamgeMultiProps) {
     const [imageUrls, setImageUrls] = useState<string[]>(oldUrls);
     const upload = (data: any, err: any) => {
+        console.log( data);
         // if (!err) {
         setImageUrls([
             ...imageUrls,
@@ -28,15 +29,20 @@ export default function UploadIamgeMulti({
     };
 
     const clearImage = (url: string) => {
+        console.log( imageUrls.filter((item) => {
+            return item !== url;
+        }))
         setImageUrls(
             imageUrls.filter((item) => {
                 return item !== url;
             })
         );
-        setImageUrls(imageUrls);
+        uploadImage(imageUrls);
+        // setImageUrls(imageUrls);
     };
     return (
         <div>
+            {JSON.stringify(imageUrls)}
             {imageUrls.length > 0 ? (
                 imageUrls.map((imageUrl, index) => (
 
@@ -46,6 +52,7 @@ export default function UploadIamgeMulti({
                 <div className="upload_btn">
                     <CldUploadButton options={
                         {
+                            multiple: true,
                             // cropping:true
                         }
                     } uploadPreset="images" onUpload={upload}>

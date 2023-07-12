@@ -8,7 +8,8 @@ import { db } from "@/lib/db"
 import { ProductSchema } from "@/lib/validations/product"
 
 interface AddProductActionType extends z.infer<typeof ProductSchema>{
-  image:string
+  image:string,
+  images:string[],
 }
 export async function addProductAction(input:AddProductActionType ) {
   const res = await db.product.create({

@@ -43,6 +43,10 @@ interface LeadTime {
     time: string
     key: string
 }
+interface Gallery {
+    url: string,
+    key: string
+}
 export default function AddProductForm({ categories, colors, sizes }: AddProductFormProps) {
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
@@ -76,7 +80,12 @@ export default function AddProductForm({ categories, colors, sizes }: AddProduct
             key: uuid()
         }
     ]);
-    const [images, setImages] = useState<string[]>([]);
+    const [images, setImages] = useState<Gallery[]>([
+        {
+            url: "",
+            key: uuid()
+        }
+    ]);
     const { register, handleSubmit,
         formState: { errors }
     } = useForm<z.infer<typeof ProductSchema>>({
@@ -371,11 +380,44 @@ export default function AddProductForm({ categories, colors, sizes }: AddProduct
             />
         </FormItem>
         <FormItem label="Gallery" message="" >
-            <UploadIamgeMulti
+            {/* <UploadIamgeMulti
                 uploadImage={setImages}
                 oldUrls={[]}
                 size="400X400"
-            />
+            /> */}
+            {
+                images.map((productImage) => <UploadIamge
+                    key={productImage.key}
+                    uploadImage={
+                        (val) => {
+                            setImages(
+                                images.map(image => image.key == productImage.key ? {
+                                    key: image.key,
+                                    url: val
+                                }
+                                    : image
+                                )
+                            )
+                        }
+                    }
+                    oldUrl={productImage.url}
+                    size="400X400"
+                />)
+            }
+            <Button
+                variant="destructive"
+                className="ml-auto"
+                type="button"
+                onClick={() => setImages([
+                    ...images,
+                    {
+                        key: uuid(),
+                        url: ""
+                    }
+                ])}
+            >
+                Add more
+            </Button>
         </FormItem>
         <Button variant={"destructive"} disabled={isPending}>
             Add Product

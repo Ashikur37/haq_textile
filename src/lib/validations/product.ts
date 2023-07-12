@@ -11,9 +11,7 @@ export const ProductSchema = z.object({
   min_order: z.number().int().min(1),
   featured: z.boolean().optional(),
   categories: z.array(
-    z.object({
-      categoryId: z.number().int().positive(),
-    })
+    z.number()
   ),
   colors: z.array(
     z.object({
@@ -22,7 +20,7 @@ export const ProductSchema = z.object({
   ),
   prices: z.array(
     z.object({
-      quantity: z.number().int().positive(),
+      label: z.string().min(1),
       unitPrice: z.number().positive(),
     })
   ),
