@@ -1,4 +1,5 @@
 import { db } from "@/lib/db"
+import { getMaxPrice, getMinPrice } from "@/lib/utils";
 import Image from "next/image";
 import { Balancer } from "react-wrap-balancer";
 
@@ -11,16 +12,20 @@ export default async function ProductPage({ params }: PrdouctPageProps) {
     const product = await db.product.findFirst({
         where: {
             slug: params.slug
+        },
+        include:{
+            prices:true
         }
     });
     return <div className="container flex gap-4 p-5 flex-col lg:flex-row bg-[#f8f9fa ] leading-7">
         <Image src={product?.image!} alt={product?.name!} width={500} height={900} />
         <div>
             <h1 className="text-2xl font-bold">{product?.name}</h1>
-            <p className="text-xl">${product?.price_from.toString()} to ${product?.price_to.toString()}</p>
+            <p className="text-xl"> ${getMinPrice(product?.prices)} to 
+                                        ${getMaxPrice(product?.prices)}</p>
             <p className="text-gray-400 ">
                 <Balancer>
-                    {product?.description}
+                    {product?.description} 
                     <br />
                     <h4>
                         Contact US

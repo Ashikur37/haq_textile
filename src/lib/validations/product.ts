@@ -4,7 +4,7 @@ export const ProductSchema = z.object({
   name: z
     .string()
     .min(5, { message: "Too short name" })
-    .max(30, { message: "Too long name" }),
+    .max(500, { message: "Too long name" }),
 
   // image:z.string(),
   description: z.string().min(1),
@@ -12,7 +12,7 @@ export const ProductSchema = z.object({
   featured: z.boolean().optional(),
   categories: z.array(
     z.number()
-  ),
+  ).optional(),
   colors: z.array(
     z.object({
       colorId: z.number().int().positive(),

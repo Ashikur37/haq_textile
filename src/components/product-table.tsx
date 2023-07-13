@@ -1,5 +1,5 @@
 "use client"
-import { Product } from "@prisma/client"
+import { Price, Product } from "@prisma/client"
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useTransition } from "react";
@@ -7,9 +7,12 @@ import { toast } from "sonner";
 import { Skeleton } from "./ui/skeleton";
 import { deleteProductAction, featureProductAction } from "@/app/_actions/product";
 import { TableCell } from "./ui/table";
-
+import { getMaxPrice, getMinPrice } from "@/lib/utils";
+interface ProductWithPrices extends Product {
+    prices: Price[];
+}
 interface ProductTableProps {
-    products: Product[]
+    products: ProductWithPrices[]
 }
 
 export const ProductTable = ({ products }: ProductTableProps) => {
@@ -54,7 +57,7 @@ export const ProductTable = ({ products }: ProductTableProps) => {
                     <Image src={product.image!} alt={product.image!} width={100} height={100} />
                 </TableCell>
                 <TableCell>
-                    {`${product.price_from}-${product.price_to}`}
+                    {`$${getMinPrice(product.prices)}-$${getMaxPrice(product.prices)}`}
                 </TableCell>
                 <TableCell>
                     {product.description}

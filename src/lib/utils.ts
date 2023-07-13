@@ -19,9 +19,9 @@ export function cn(...inputs: ClassValue[]) {
     }`
   }
 
-export function getMinPrice(prices:Price[]){
-    return Math.min(...prices.map(price=>price.unitPrice))
+export function getMinPrice(prices:Price[]|undefined){
+    return prices&&Math.min(...prices.map(price=>price.unitPrice))
 }
-export function getMaxPrice(prices:Price[]){
-    return Math.max(...prices.map(price=>price.unitPrice))
+export function getMaxPrice(prices:Price[]|undefined){
+    return prices&&Math.max(...prices.map(price=>price.unitPrice))
 }

@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
 import Select from 'react-select'
 import { v4 as uuid } from 'uuid';
-import UploadIamgeMulti from "./UploadImageMulti";
+
 interface AddProductFormProps {
     categories: {
         id: number,
@@ -113,7 +113,7 @@ export default function AddProductForm({ categories, colors, sizes }: AddProduct
             }
         ])
     }
-    const addPrice = () => {
+    const addTime = () => {
         setProductTimes([
             ...productTimes,
             {
@@ -124,7 +124,7 @@ export default function AddProductForm({ categories, colors, sizes }: AddProduct
             }
         ])
     }
-    const addTime = () => {
+    const addPrice = () => {
         setProductPrices([
             ...productPrices,
             {
@@ -139,7 +139,25 @@ export default function AddProductForm({ categories, colors, sizes }: AddProduct
         startTransition(async () => {
             await addProductAction({
                 ...data,
-                image
+                image,
+                images: images.map(image => image.url),
+                categories: productCategories,
+                sizes: productSizes.map(size => ({
+                    sizeId: size.id,
+                    extra: parseFloat(size.extra.toString())
+                })),
+                colors: productColors.map(color => ({
+                    colorId: color.id,
+                    extra: parseFloat(color.extra.toString())
+                })),
+                prices: productPrices.map(price => ({
+                    label: price.label,
+                    unitPrice:parseFloat(price.unitPrice.toString())
+                })),
+                times: productTimes.map(time => ({
+                    quantity: time.quantity,
+                    time: time.time
+                }))
             });
             router.push('/admin/products');
         })
@@ -170,6 +188,13 @@ export default function AddProductForm({ categories, colors, sizes }: AddProduct
                 onChange={cats => setProductCategories(cats?.map(c => c.value!) || [])}
             />
         </FormItem>
+        <FormItem label="Min order" message={errors.min_order?.message} >
+            <Input
+                aria-invalid={!!errors.min_order}
+                placeholder="Type min order here."
+                {...register("min_order",{ valueAsNumber: true })}
+            />
+        </FormItem>
         <FormItem label="Colors" message={errors.colors?.message} >
             {
                 productColors.map(productColor => <div key={productColor.key} className="flex gap-2 my-2">
@@ -197,6 +222,7 @@ export default function AddProductForm({ categories, colors, sizes }: AddProduct
                         className="w-1/2"
                         placeholder="Extra price"
                         type="number"
+                        step="0.1"
                         onChange={(e) => setProductColors(productColors.map(c => productColor.key == c.key ? {
                             id: c.id,
                             extra: e.target.value as unknown as number,
@@ -250,6 +276,7 @@ export default function AddProductForm({ categories, colors, sizes }: AddProduct
                         className="w-1/2"
                         placeholder="Extra price"
                         type="number"
+                        step="0.1"
                         onChange={(e) => setProductSizes(productSizes.map(c => productSize.key == c.key ? {
                             id: c.id,
                             extra: e.target.value as unknown as number,
@@ -292,8 +319,9 @@ export default function AddProductForm({ categories, colors, sizes }: AddProduct
                     />
                     <Input
                         className="w-1/2"
-                        placeholder="Price label"
+                        placeholder="Unit price"
                         type="number"
+                        step="0.1"
                         onChange={(e) => setProductPrices(productPrices.map(c => productPrice.key == c.key ? {
                             label: c.label,
                             unitPrice: e.target.value as unknown as number,
