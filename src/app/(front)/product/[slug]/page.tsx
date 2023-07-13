@@ -1,3 +1,4 @@
+import ProductSlider from "@/components/product-page/product-slider";
 import { db } from "@/lib/db"
 import { getMaxPrice, getMinPrice } from "@/lib/utils";
 import Image from "next/image";
@@ -14,12 +15,16 @@ export default async function ProductPage({ params }: PrdouctPageProps) {
             slug: params.slug
         },
         include:{
-            prices:true
+            prices:true,
+            images:true,
         }
     });
     return <div className="container flex gap-4 p-5 flex-col lg:flex-row bg-[#f8f9fa ] leading-7">
-        <Image src={product?.image!} alt={product?.name!} width={500} height={900} />
-        <div>
+        {/* <Image src={product?.image!} alt={product?.name!} width={500} height={900} /> */}
+        <div className="w-2/5">
+        <ProductSlider thumbnailImage={product?.image!} images={product?.images.map(image=>image.image!)}/>
+        </div >
+        <div className="w-3/5">
             <h1 className="text-2xl font-bold">{product?.name}</h1>
             <p className="text-xl"> ${getMinPrice(product?.prices)} to 
                                         ${getMaxPrice(product?.prices)}</p>
