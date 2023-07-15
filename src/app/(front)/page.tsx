@@ -4,40 +4,44 @@ import Hero from "@/components/homepage/hero";
 import { db } from "@/lib/db";
 
 export default async function Home() {
-  const images=await db.image.findMany({
-    orderBy:{
-     id:"desc" 
+  const images = await db.image.findMany({
+    orderBy: {
+      id: "desc"
     }
   })
   const categories = await db.category.findMany({
     where: {
-        parent_id:null
+      parent_id: null
     },
     include: {
-        products: {
+      products: {
+        take: 5,
+        orderBy: {
+          productId: "desc"
+        },
+        include: {
+          product: {
             include: {
-                product: {
-                    include: {
-                        prices: true
-                    }
-                }
+              prices: true
             }
-        }
+          }
+        },
+      }
     }
-})
-  const featureProducts=await db.product.findMany({
-    where:{
-      featured:true
+  })
+  const featureProducts = await db.product.findMany({
+    where: {
+      featured: true
     },
-    include:{
-      prices:true
+    include: {
+      prices: true
     }
   });
   return (
-   <>
-    <Hero images={images}/>
-    <FeatureProducts products={featureProducts}/>
-    <CategorySection categories={categories}/>
-   </>
+    <>
+      <Hero images={images} />
+      <FeatureProducts products={featureProducts} />
+      <CategorySection categories={categories} />
+    </>
   )
 }
