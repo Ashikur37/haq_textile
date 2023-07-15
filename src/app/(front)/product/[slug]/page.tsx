@@ -19,7 +19,7 @@ export default async function ProductPage({ params }: PrdouctPageProps) {
             images:true,
         }
     });
-    return <div className="container flex gap-4 p-5 flex-col lg:flex-row bg-[#f8f9fa ] leading-7">
+    return <div className="container flex gap-4 p-5 flex-col lg:flex-row bg-[#f8f9fa ] leading-7  ">
         {/* <Image src={product?.image!} alt={product?.name!} width={500} height={900} /> */}
         <div className="w-2/5">
         <ProductSlider thumbnailImage={product?.image!} images={product?.images.map(image=>image.image!)}/>

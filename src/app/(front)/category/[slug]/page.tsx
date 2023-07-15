@@ -1,9 +1,5 @@
 import ProductCard from "@/components/common/product-card"
 import { db } from "@/lib/db"
-import { getMaxPrice, getMinPrice } from "@/lib/utils"
-import Image from "next/image"
-import Link from "next/link"
-
 interface CategoryPageProps {
     params: {
         slug: string
@@ -36,5 +32,4 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             }
         </div>
     </div>
-
 }
