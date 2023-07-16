@@ -2,7 +2,7 @@ import CategorySection from "@/components/homepage/category-section";
 import FeatureProducts from "@/components/homepage/feature-products";
 import Hero from "@/components/homepage/hero";
 import { db } from "@/lib/db";
-export const runtime = 'edge';
+
 export default async function Home() {
   const images = await db.image.findMany({
     orderBy: {
