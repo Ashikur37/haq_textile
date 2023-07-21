@@ -1,3 +1,4 @@
+export const runtime = 'edge'
 import ProductSlider from "@/components/product-page/product-slider";
 import { db } from "@/lib/db"
 import { getMaxPrice, getMinPrice } from "@/lib/utils";

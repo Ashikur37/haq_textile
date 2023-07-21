@@ -1,3 +1,4 @@
+export const runtime = 'edge'
 import FormWrapper from "@/components/form-wrapper";
 import AddSizeForm from "@/components/form/AddSizeForm";
 

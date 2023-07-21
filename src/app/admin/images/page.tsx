@@ -1,4 +1,5 @@
 
+export const runtime = 'edge'
 import { ImageTable } from "@/components/Image-table";
 import { db } from "@/lib/db"
 

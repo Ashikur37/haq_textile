@@ -1,3 +1,4 @@
+export const runtime = 'edge'
 import FormWrapper from "@/components/form-wrapper";
 import AddCategoryForm from "@/components/form/AddCategoryForm";
 import { db } from "@/lib/db";

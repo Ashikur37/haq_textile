@@ -1,3 +1,4 @@
+export const runtime = 'edge'
 import AddProductForm from "@/components/form/AddProductForm";
 import { db } from "@/lib/db";
 

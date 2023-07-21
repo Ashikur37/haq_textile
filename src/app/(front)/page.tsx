@@ -1,3 +1,4 @@
+export const runtime = 'edge'
 import CategorySection from "@/components/homepage/category-section";
 import FeatureProducts from "@/components/homepage/feature-products";
 import Hero from "@/components/homepage/hero";

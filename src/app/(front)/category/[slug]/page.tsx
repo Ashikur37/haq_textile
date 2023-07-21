@@ -1,3 +1,4 @@
+export const runtime = 'edge'
 import ProductCard from "@/components/common/product-card"
 import { db } from "@/lib/db"
 interface CategoryPageProps {

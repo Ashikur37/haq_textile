@@ -53,7 +53,9 @@ export default function EditProductForm({ categories, colors, sizes,product }: E
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
     const [image, setImage] = useState<string>(product.image);
-    const [productCategories, setProductCategories] = useState<number[]>([]);
+    const [productCategories, setProductCategories] = useState<number[]>(
+        product.categories.map((productCategory:any)=>productCategory.categoryId)
+    );
 
     const [productColors, setProductColors] = useState<ProductWithColorOrSize[]>(
         product.colors.map((productColor:any)=>({
@@ -426,7 +428,6 @@ export default function EditProductForm({ categories, colors, sizes,product }: E
         <FormItem label="Description" message={errors.description?.message} >
             {/* {product.description} */}
             <Textarea
-             
                 aria-invalid={!!errors.description}
                 placeholder="Description"
                 {...register("description",{value:product.description})}

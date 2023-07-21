@@ -1,3 +1,4 @@
+export const runtime = 'edge'
 import { ProductTable } from "@/components/product-table";
 import { db } from "@/lib/db";
 

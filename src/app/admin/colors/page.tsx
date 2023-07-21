@@ -1,3 +1,4 @@
+export const runtime = 'edge'
 import { ColorTable } from "@/components/color-table";
 import { db } from "@/lib/db";
 
