@@ -1,4 +1,3 @@
-export const runtime = 'edge'
 import AddImageForm from "@/components/form/AddImageForm";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 

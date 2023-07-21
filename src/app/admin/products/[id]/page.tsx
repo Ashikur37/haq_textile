@@ -1,4 +1,3 @@
-export const runtime = 'edge'
 import EditProductForm from "@/components/form/EditProductForm";
 import { db } from "@/lib/db";
 interface EditProductProps {
