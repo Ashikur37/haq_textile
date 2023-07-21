@@ -1,7 +1,7 @@
 import ProductSlider from "@/components/product-page/product-slider";
+import SizeCart from "@/components/product-page/size-cart";
 import { db } from "@/lib/db"
 import { getMaxPrice, getMinPrice } from "@/lib/utils";
-import Image from "next/image";
 import { Balancer } from "react-wrap-balancer";
 
 interface PrdouctPageProps {
@@ -14,23 +14,74 @@ export default async function ProductPage({ params }: PrdouctPageProps) {
         where: {
             slug: params.slug
         },
-        include:{
-            prices:true,
-            images:true,
+        include: {
+            prices: true,
+            images: true,
+            colors: {
+                include: {
+                    color: true
+                }
+            },
+            sizes: {
+                include: {
+                    size: true
+                }
+            }
         }
     });
     return <div className="container flex gap-4 p-5 flex-col lg:flex-row bg-[#f8f9fa ] leading-7  ">
         {/* <Image src={product?.image!} alt={product?.name!} width={500} height={900} /> */}
         <div className="w-2/5">
-        <ProductSlider thumbnailImage={product?.image!} images={product?.images.map(image=>image.image!)}/>
+            <ProductSlider thumbnailImage={product?.image!} images={product?.images.map(image => image.image!)} />
         </div >
         <div className="w-3/5">
             <h1 className="text-2xl font-bold">{product?.name}</h1>
-            <p className="text-xl"> ${getMinPrice(product?.prices)} to 
-                                        ${getMaxPrice(product?.prices)}</p>
+            {/* <p className="text-xl"> ${getMinPrice(product?.prices)} to 
+                                        ${getMaxPrice(product?.prices)}</p> */}
+            <div className="flex gap-4 ">
+                {
+                    product?.prices.map(price => <div key={price.id}>
+                        <h4>
+                            {price.label}
+                        </h4>
+                        <b>
+                            ${price.unitPrice}
+                        </b>
+                    </div>)
+                }
+            </div>
+            <hr />
+            <div className="mt-2 flex gap-4">
+                <h4>
+                    Color
+                </h4>
+                {
+                    product?.colors.map(color => <div key={color.colorId}>
+                        <div className={"h-5 w-5 mt-1"} style={{ backgroundColor: color.color.code }}></div>
+                    </div>)
+                }
+            </div>
+            <div className="flex gap-4">
+                <h4>
+                    Size
+                </h4>
+                <div className="flex flex-col">
+                        {
+                            product?.sizes.map(size=><div key={size.sizeId} className="flex gap-4">
+                                <b>
+                                    {size.size.name}
+                                </b>
+                                <b>
+                                    ${size.extra+getMaxPrice(product?.prices)}
+                                </b>
+                                <SizeCart/>
+                            </div>)
+                        }
+                </div>
+            </div>
             <p className="text-gray-400 ">
                 <Balancer>
-                    {product?.description} 
+                    {product?.description}
                     <br />
                     <h4>
                         Contact US
