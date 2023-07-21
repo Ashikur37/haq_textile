@@ -182,6 +182,8 @@ export async function editProductAction(input: EditProductActionType) {
     })
   }
   revalidatePath("/admin/products")
+  revalidatePath("/")
+  revalidatePath("/product/"+product.slug)
   return product.image
 }
 export async function deleteProductAction(id: number) {
