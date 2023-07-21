@@ -4,7 +4,6 @@ import { revalidatePath } from "next/cache"
 import slug from "slug"
 import { z } from "zod"
 
-import { deleteImageFromCloudinary } from "@/lib/cloudinary"
 import { db } from "@/lib/db"
 import { ProductSchema } from "@/lib/validations/product"
 
@@ -190,7 +189,7 @@ export async function deleteProductAction(id: number) {
       id,
     },
   })
-  await deleteImageFromCloudinary(product?.image!)
+  // await deleteImageFromCloudinary(product?.image!)
   await db.product.delete({
     where: {
       id,
