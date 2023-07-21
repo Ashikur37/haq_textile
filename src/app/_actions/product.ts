@@ -93,6 +93,7 @@ export async function editProductAction(input: EditProductActionType) {
       image: input.image,
       description: input.description,
       min_order: input.min_order,
+      slug: slug(input.name),
     },
   })
   if (input.prices) {
