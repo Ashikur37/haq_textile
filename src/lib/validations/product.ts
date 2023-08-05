@@ -7,7 +7,7 @@ export const ProductSchema = z.object({
     .max(500, { message: "Too long name" }),
 
   // image:z.string(),
-  description: z.string().min(1),
+  description: z.string().min(1).optional(),
   min_order: z.number().int().min(1),
   featured: z.boolean().optional(),
   categories: z.array(

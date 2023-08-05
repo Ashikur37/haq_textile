@@ -1,3 +1,5 @@
+import Description from "@/components/product-page/description";
+import ProductColor from "@/components/product-page/product-color";
 import ProductSlider from "@/components/product-page/product-slider";
 import SizeCart from "@/components/product-page/size-cart";
 import { db } from "@/lib/db"
@@ -29,8 +31,8 @@ export default async function ProductPage({ params }: PrdouctPageProps) {
             }
         }
     });
+    console.log(product?.name);
     return <div className="container flex gap-4 p-5 flex-col lg:flex-row bg-[#f8f9fa ] leading-7  ">
-        {/* <Image src={product?.image!} alt={product?.name!} width={500} height={900} /> */}
         <div className="w-2/5">
             <ProductSlider thumbnailImage={product?.image!} images={product?.images.map(image => image.image!)} />
         </div >
@@ -51,37 +53,30 @@ export default async function ProductPage({ params }: PrdouctPageProps) {
                 }
             </div>
             <hr />
-            <div className="mt-2 flex gap-4">
-                <h4>
-                    Color
-                </h4>
-                {
-                    product?.colors.map(color => <div key={color.colorId}>
-                        <div className={"h-5 w-5 mt-1"} style={{ backgroundColor: color.color.code }}></div>
-                    </div>)
-                }
-            </div>
+            {
+                product?.colors&& <ProductColor colors={product?.colors} />
+            }
             <div className="flex gap-4">
                 <h4>
                     Size
                 </h4>
                 <div className="flex flex-col">
-                        {
-                            product?.sizes.map(size=><div key={size.sizeId} className="flex gap-4">
-                                <b>
-                                    {size.size.name}
-                                </b>
-                                <b>
-                                    ${size.extra+getMaxPrice(product?.prices)}
-                                </b>
-                                <SizeCart/>
-                            </div>)
-                        }
+                    {
+                        product?.sizes.map(size => <div key={size.sizeId} className="flex gap-4">
+                            <b>
+                                {size.size.name}
+                            </b>
+                            <b>
+                                ${size.extra + getMaxPrice(product?.prices)}
+                            </b>
+                            <SizeCart />
+                        </div>)
+                    }
                 </div>
             </div>
             <p className="text-gray-400 ">
                 <Balancer>
-                    {product?.description}
+               <Description description={product?.description!}/>
                     <br />
                     <h4>
                         Contact US

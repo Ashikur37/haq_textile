@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useTransition } from "react";
 import { toast } from "sonner";
 import { Skeleton } from "./ui/skeleton";
-import { deleteProductAction, featureProductAction } from "@/app/_actions/product";
+import { copyProductAction, deleteProductAction, featureProductAction } from "@/app/_actions/product";
 import { TableCell } from "./ui/table";
 import { getMaxPrice, getMinPrice } from "@/lib/utils";
 import Link from "next/link";
@@ -21,13 +21,19 @@ export const ProductTable = ({ products }: ProductTableProps) => {
     const deleteProduct = (id: number) => {
         startTransition(async () => {
             await deleteProductAction(id);
-            toast.success("Image deleted");
+            toast.success("Product deleted");
         })
     }
     const featureProduct = (id: number, featured: boolean) => {
         startTransition(async () => {
             await featureProductAction(id, featured);
-            toast.success("Image deleted");
+            toast.success("Product featured");
+        })
+    }
+    const copyProduct = (id: number) => {
+        startTransition(async () => {
+            await copyProductAction(id);
+            toast.success("Product copied");
         })
     }
     return isPending ? <Skeleton className="h-6 container" /> : <table className="w-full caption-bottom text-sm">
@@ -37,9 +43,6 @@ export const ProductTable = ({ products }: ProductTableProps) => {
                 <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">Name</th>
                 <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">Image</th>
                 <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">Price</th>
-                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
-                    Description
-                </th>
                 <th>Featured</th>
                 <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">Action</th>
             </tr>
@@ -60,9 +63,7 @@ export const ProductTable = ({ products }: ProductTableProps) => {
                     <TableCell>
                         {`$${getMinPrice(product.prices)}-$${getMaxPrice(product.prices)}`}
                     </TableCell>
-                    <TableCell>
-                        {product.description}
-                    </TableCell>
+                  
                     <TableCell>
                         <label className="relative inline-flex items-center cursor-pointer">
                             <input type="checkbox" value="" className="sr-only peer" checked={product.featured}
@@ -72,6 +73,12 @@ export const ProductTable = ({ products }: ProductTableProps) => {
                         </label>
                     </TableCell>
                     <TableCell>
+                    <Button
+                            variant={"outline"}
+                            onClick={() => copyProduct(product.id)}
+                        >
+                            Copy
+                        </Button>
                         <Link href={`/admin/products/${product.id}`}>
                             <Button
                                 variant={"outline"}

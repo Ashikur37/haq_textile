@@ -20,7 +20,7 @@ export async function addProductAction(input: AddProductActionType) {
     data: {
       name: input.name,
       image: input.image,
-      description: input.description,
+      description: input.description!,
       slug: slug(input.name),
       min_order: input.min_order,
     },
@@ -212,4 +212,89 @@ export async function featureProductAction(id: number, featured: boolean) {
   })
   revalidatePath("/admin/products")
   revalidatePath("/")
+}
+export async function copyProductAction(id:number){
+  const oldProduct = await db.product.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      prices: true,
+      categories:true,
+      images:true,
+      colors:true,
+      sizes:true,
+      times:true,
+    }
+  })
+  if(oldProduct){
+    const product=await db.product.create({
+      data: {
+        name: oldProduct.name,
+        image: oldProduct.image,
+        description: oldProduct.description,
+        slug: slug(oldProduct.name)+Math.floor(Math.random()*1000),
+        min_order: oldProduct.min_order,
+      },
+    })
+    if (oldProduct.prices) {
+      await db.price.createMany({
+        data: oldProduct.prices?.map((price) => ({
+          label: price.label,
+          unitPrice: price.unitPrice,
+          productId: product.id,
+        })),
+      })
+    }
+    if (oldProduct.categories) {
+      await db.categoriesOnProducts.createMany({
+        data: oldProduct.categories?.map((category) => ({
+          categoryId: category.categoryId,
+          productId: product.id,
+        })),
+      })
+    }
+    if (oldProduct.images) {
+      await db.productImage.createMany({
+        data: oldProduct.images?.map((image) => ({
+          image:image.image,
+          productId: product.id,
+        })),
+      })
+    }
+    //colors
+    if (oldProduct.colors) {
+      await db.colorsOnProducts.createMany({
+        data: oldProduct.colors?.map((color) => ({
+          colorId: color.colorId,
+          productId: product.id,
+          extra: color.extra,
+        })),
+      })
+    }
+    //sizes
+    if (oldProduct.sizes) {
+      await db.sizesOnProducts.createMany({
+        data: oldProduct.sizes?.map((size) => ({
+          sizeId: size.sizeId,
+          productId: product.id,
+          extra: size.extra,
+        })),
+      })
+    }
+    //times
+    if (oldProduct.times) {
+      await db.leadTime.createMany({
+        data: oldProduct.times?.map((leadTime) => ({
+          quantity: leadTime.quantity,
+          productId: product.id,
+          time: leadTime.time,
+        })),
+      })
+    }
+  }
+
+  revalidatePath("/admin/products");
+  revalidatePath("/");
+
 }

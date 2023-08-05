@@ -12,7 +12,8 @@ import { useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
 import Select from 'react-select'
 import { v4 as uuid } from 'uuid';
-
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 interface AddProductFormProps {
     categories: {
         id: number,
@@ -47,10 +48,31 @@ interface Gallery {
     url: string,
     key: string
 }
+const modules = {
+    toolbar: [
+      [{ header: '1' }, { header: '2' }, { font: [] }],
+      [{ size: [] }],
+      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+      [
+        { list: 'ordered' },
+        { list: 'bullet' },
+        { indent: '-1' },
+        { indent: '+1' },
+      ],
+      ['link', 'image', 'video'],
+      ['clean'],
+    ],
+    clipboard: {
+      // toggle to add extra line breaks when pasting HTML:
+      matchVisual: false,
+    },
+  }
 export default function AddProductForm({ categories, colors, sizes }: AddProductFormProps) {
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
     const [image, setImage] = useState<string>("");
+    const [description, setDescription] = useState<string>("");
+
     const [productCategories, setProductCategories] = useState<number[]>([]);
     const [productColors, setProductColors] = useState<ProductWithColorOrSize[]>([
         {
@@ -139,6 +161,7 @@ export default function AddProductForm({ categories, colors, sizes }: AddProduct
         startTransition(async () => {
             await addProductAction({
                 ...data,
+                description,
                 image,
                 images: images.map(image => image.url),
                 categories: productCategories,
@@ -392,14 +415,14 @@ export default function AddProductForm({ categories, colors, sizes }: AddProduct
                 Add more
             </Button>
         </FormItem>
-
-        <FormItem label="Description" message={errors.description?.message} >
+        <ReactQuill modules={modules} theme="snow" value={description} onChange={setDescription} />
+        {/* <FormItem label="Description" message={errors.description?.message} >
             <Textarea
                 aria-invalid={!!errors.description}
                 placeholder="Description"
                 {...register("description")}
             />
-        </FormItem>
+        </FormItem> */}
         <FormItem label="Thumbnail Image" message="" >
             <UploadIamge
                 uploadImage={setImage}

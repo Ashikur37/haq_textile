@@ -13,7 +13,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import Select from 'react-select'
 import { v4 as uuid } from 'uuid';
 import { Product } from "@prisma/client";
-
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 interface EditProductFormProps {
     categories: {
         id: number,
@@ -49,10 +50,32 @@ interface Gallery {
     url: string,
     key: string
 }
+const modules = {
+    toolbar: [
+      [{ header: '1' }, { header: '2' }, { font: [] }],
+      [{ size: [] }],
+      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+      [
+        { list: 'ordered' },
+        { list: 'bullet' },
+        { indent: '-1' },
+        { indent: '+1' },
+      ],
+      ['link', 'image', 'video'],
+      ['clean'],
+    ],
+    clipboard: {
+      // toggle to add extra line breaks when pasting HTML:
+      matchVisual: false,
+    },
+  }
+
 export default function EditProductForm({ categories, colors, sizes,product }: EditProductFormProps) {
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
     const [image, setImage] = useState<string>(product.image);
+    const [description, setDescription] = useState<string>(product.description);
+
     const [productCategories, setProductCategories] = useState<number[]>(
         product.categories.map((productCategory:any)=>productCategory.categoryId)
     );
@@ -147,6 +170,7 @@ export default function EditProductForm({ categories, colors, sizes,product }: E
             await editProductAction({
                 ...data,
                 productId:product.id,
+                description,
                 image,
                 images: images.map(image => image.url),
                 categories: productCategories,
@@ -424,15 +448,15 @@ export default function EditProductForm({ categories, colors, sizes,product }: E
                 Add more
             </Button>
         </FormItem>
-
-        <FormItem label="Description" message={errors.description?.message} >
-            {/* {product.description} */}
+        <ReactQuill modules={modules} theme="snow" value={description} onChange={setDescription} />
+        {/* <FormItem label="Description" message={errors.description?.message} >
+            {product.description}
             <Textarea
                 aria-invalid={!!errors.description}
                 placeholder="Description"
                 {...register("description",{value:product.description})}
             />
-        </FormItem>
+        </FormItem> */}
         <FormItem label="Thumbnail Image" message="" >
             <UploadIamge
                 uploadImage={setImage}
