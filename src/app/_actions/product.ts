@@ -184,7 +184,7 @@ export async function editProductAction(input: EditProductActionType) {
   }
   revalidatePath("/admin/products")
   revalidatePath("/")
-  revalidatePath("/product/"+product.slug)
+  revalidatePath("/product/" + product.slug)
   return product.image
 }
 export async function deleteProductAction(id: number) {
@@ -193,6 +193,37 @@ export async function deleteProductAction(id: number) {
       id,
     },
   })
+  await db.leadTime.deleteMany({
+    where: {
+      productId: id,
+    },
+  })
+  await db.price.deleteMany({
+    where: {
+      productId: id,
+    },
+  })
+  await db.colorsOnProducts.deleteMany({
+    where: {
+      productId: id,
+    },
+  })
+  await db.sizesOnProducts.deleteMany({
+    where: {
+      productId: id,
+    },
+  })
+  await db.productImage.deleteMany({
+    where: {
+      productId: id,
+    },
+  })
+  await db.categoriesOnProducts.deleteMany({
+    where: {
+      productId: id,
+    },
+  })
+
   await deleteImageFromCloudinary(product?.image!)
   await db.product.delete({
     where: {
@@ -213,27 +244,27 @@ export async function featureProductAction(id: number, featured: boolean) {
   revalidatePath("/admin/products")
   revalidatePath("/")
 }
-export async function copyProductAction(id:number){
+export async function copyProductAction(id: number) {
   const oldProduct = await db.product.findUnique({
     where: {
       id,
     },
     include: {
       prices: true,
-      categories:true,
-      images:true,
-      colors:true,
-      sizes:true,
-      times:true,
-    }
+      categories: true,
+      images: true,
+      colors: true,
+      sizes: true,
+      times: true,
+    },
   })
-  if(oldProduct){
-    const product=await db.product.create({
+  if (oldProduct) {
+    const product = await db.product.create({
       data: {
         name: oldProduct.name,
         image: oldProduct.image,
         description: oldProduct.description,
-        slug: slug(oldProduct.name)+Math.floor(Math.random()*1000),
+        slug: slug(oldProduct.name) + Math.floor(Math.random() * 1000),
         min_order: oldProduct.min_order,
       },
     })
@@ -257,7 +288,7 @@ export async function copyProductAction(id:number){
     if (oldProduct.images) {
       await db.productImage.createMany({
         data: oldProduct.images?.map((image) => ({
-          image:image.image,
+          image: image.image,
           productId: product.id,
         })),
       })
@@ -294,7 +325,6 @@ export async function copyProductAction(id:number){
     }
   }
 
-  revalidatePath("/admin/products");
-  revalidatePath("/");
-
+  revalidatePath("/admin/products")
+  revalidatePath("/")
 }
