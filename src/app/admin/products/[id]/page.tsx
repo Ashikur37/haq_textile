@@ -21,6 +21,7 @@ export default async function EditProduct({params}:EditProductProps){
             colors:true,
             sizes:true,
             times:true,
+            attributes:true
             
         }
     });
@@ -53,7 +54,16 @@ export default async function EditProduct({params}:EditProductProps){
             name: true
         }
     });
+    const attributes = await db.attribute.findMany({
+        orderBy: {
+            name: "asc"
+        },
+        select: {
+            id: true,
+            name: true
+        }
+    });
     return <div>
-        <EditProductForm product={product} categories={categories} colors={colors} sizes={sizes}/>
+        <EditProductForm product={product} categories={categories} colors={colors} sizes={sizes} attributes={attributes}/>
     </div>
 }

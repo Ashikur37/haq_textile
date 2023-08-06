@@ -69,6 +69,16 @@ export async function addProductAction(input: AddProductActionType) {
       })),
     })
   }
+   //sizes
+   if (input.attributes) {
+    await db.attributesOnProducts.createMany({
+      data: input.attributes?.map((attribute) => ({
+        attributeId: attribute.attributeId,
+        productId: product.id,
+        value: attribute.value,
+      })),
+    })
+  }
   //times
   if (input.times) {
     await db.leadTime.createMany({
@@ -93,7 +103,7 @@ export async function editProductAction(input: EditProductActionType) {
       image: input.image,
       description: input.description,
       min_order: input.min_order,
-      slug: slug(input.name),
+      slug: slug(input.name)+ Math.floor(Math.random() * 1000),
     },
   })
   if (input.prices) {
@@ -148,6 +158,20 @@ export async function editProductAction(input: EditProductActionType) {
         colorId: color.colorId,
         productId: product.id,
         extra: color.extra,
+      })),
+    })
+  }
+  if (input.attributes) {
+    await db.attributesOnProducts.deleteMany({
+      where: {
+        productId,
+      },
+    })
+    await db.attributesOnProducts.createMany({
+      data: input.attributes?.map((attribute) => ({
+        attributeId: attribute.attributeId,
+        productId: product.id,
+        value: attribute.value,
       })),
     })
   }
@@ -208,6 +232,11 @@ export async function deleteProductAction(id: number) {
       productId: id,
     },
   })
+  await db.attributesOnProducts.deleteMany({
+    where: {
+      productId: id,
+    },
+  })
   await db.sizesOnProducts.deleteMany({
     where: {
       productId: id,
@@ -257,6 +286,7 @@ export async function copyProductAction(id: number) {
       colors: true,
       sizes: true,
       times: true,
+      attributes:true
     },
   })
   if (oldProduct) {
@@ -304,6 +334,16 @@ export async function copyProductAction(id: number) {
         })),
       })
     }
+        // attributes
+        if (oldProduct.attributes) {
+          await db.attributesOnProducts.createMany({
+            data: oldProduct.attributes?.map((attribute) => ({
+              attributeId: attribute.attributeId,
+              productId: product.id,
+              value: attribute.value,
+            })),
+          })
+        }
     //sizes
     if (oldProduct.sizes) {
       await db.sizesOnProducts.createMany({

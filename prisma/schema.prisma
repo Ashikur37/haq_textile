@@ -8,7 +8,6 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
 
 model Image {
@@ -40,6 +39,8 @@ model Product {
   featured    Boolean                @default(false)
   categories  CategoriesOnProducts[]
   colors      ColorsOnProducts[]
+  attributes      AttributesOnProducts[]
+
   prices      Price[]
   sizes       SizesOnProducts[]
   times       LeadTime[]
@@ -117,6 +118,23 @@ model Size {
   createdAt       DateTime          @default(now()) @map(name: "created_at")
   updatedAt       DateTime          @updatedAt @map(name: "updated_at")
   SizesOnProducts SizesOnProducts[]
+}
+model Attribute {
+  id              Int               @id @default(autoincrement())
+  name            String
+  createdAt       DateTime          @default(now()) @map(name: "created_at")
+  updatedAt       DateTime          @updatedAt @map(name: "updated_at")
+  AttributesOnProducts AttributesOnProducts[]
+}
+
+model AttributesOnProducts {
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int // relation scalar field (used in the `@relation` attribute above)
+  attribute      Attribute    @relation(fields: [attributeId], references: [id])
+  attributeId    Int // relation scalar field (used in the `@relation` attribute above)
+  value     String
+
+  @@id([productId, attributeId])
 }
 
 model ProductImage {

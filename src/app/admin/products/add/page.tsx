@@ -30,7 +30,16 @@ export default async function AddProduct(){
             name: true
         }
     });
+    const attributes = await db.attribute.findMany({
+        orderBy: {
+            name: "asc"
+        },
+        select: {
+            id: true,
+            name: true
+        }
+    });
     return <div>
-        <AddProductForm categories={categories} colors={colors} sizes={sizes}/>
+        <AddProductForm categories={categories} colors={colors} sizes={sizes} attributes={attributes}/>
     </div>
 }

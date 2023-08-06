@@ -72,6 +72,16 @@ export default function AdminSidebar() {
                     link: "/admin/colors/add"
                 }
             ]} />
+              <SidebarLink label="Attribute" open={open} subMenus={[
+                {
+                    label: "Attribute List",
+                    link: "/admin/attributes"
+                },
+                {
+                    label: "Add Attribute",
+                    link: "/admin/attributes/add"
+                }
+            ]} />
 
         </ul>
     </div>

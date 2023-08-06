@@ -27,11 +27,20 @@ interface AddProductFormProps {
     sizes: {
         id: number,
         name: string
-    }[]
+    }[],
+    attributes: {
+        id: number,
+        name: string
+    }[],
 }
 interface ProductWithColorOrSize {
     id: number;
     extra: number,
+    key: string
+}
+interface ProductWithAttribute {
+    id: number;
+    value: string,
     key: string
 }
 interface ProductPrice {
@@ -67,7 +76,7 @@ const modules = {
       matchVisual: false,
     },
   }
-export default function AddProductForm({ categories, colors, sizes }: AddProductFormProps) {
+export default function AddProductForm({ categories, colors, sizes,attributes }: AddProductFormProps) {
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
     const [image, setImage] = useState<string>("");
@@ -78,6 +87,13 @@ export default function AddProductForm({ categories, colors, sizes }: AddProduct
         {
             id: 0,
             extra: 0,
+            key: uuid()
+        }
+    ]);
+    const [productAttributes, setProductAttributes] = useState<ProductWithAttribute[]>([
+        {
+            id: 0,
+            value: "",
             key: uuid()
         }
     ]);
@@ -119,6 +135,17 @@ export default function AddProductForm({ categories, colors, sizes }: AddProduct
             {
                 id: 0,
                 extra: 0,
+                key: uuid()
+
+            }
+        ])
+    }
+    const addAttribute = () => {
+        setProductAttributes([
+            ...productAttributes,
+            {
+                id: 0,
+                value: "",
                 key: uuid()
 
             }
@@ -172,6 +199,10 @@ export default function AddProductForm({ categories, colors, sizes }: AddProduct
                 colors: productColors.map(color => ({
                     colorId: color.id,
                     extra: parseFloat(color.extra.toString())
+                })),
+                attributes: productAttributes.map(attribute => ({
+                    attributeId: attribute.id,
+                    value: attribute.value
                 })),
                 prices: productPrices.map(price => ({
                     label: price.label,
@@ -268,6 +299,60 @@ export default function AddProductForm({ categories, colors, sizes }: AddProduct
                 className="ml-auto"
                 type="button"
                 onClick={addColor}
+            >
+                Add more
+            </Button>
+        </FormItem>
+        <FormItem label="Attributess" message={errors.attributes?.message} >
+            {
+                productAttributes.map(productAttribute => <div key={productAttribute.key} className="flex gap-2 my-2">
+                    <Select
+                        className="w-1/2"
+                        options={
+                            [
+                                {
+                                    value: null,
+                                    label: "Select Attribute"
+                                },
+                                ...attributes.map(attribute => ({
+                                    value: attribute.id,
+                                    label: attribute.name
+                                }))
+                            ]
+                        }
+                        onChange={(val) => setProductAttributes(productAttributes.map(c => productAttribute.key == c.key ? {
+                            id: val?.value!,
+                            value: c.value,
+                            key: c.key
+                        } : c))}
+                    />
+                    <Input
+                        className="w-1/2"
+                        placeholder="value"
+                        type="text"
+                        step="0.1"
+                        onChange={(e) => setProductAttributes(productAttributes.map(c => productAttribute.key == c.key ? {
+                            id: c.id,
+                            value: e.target.value ,
+                            key: c.key
+                        } : c))
+                        }
+                    />
+                    <Button
+                        variant="destructive"
+                        onClick={() => setProductAttributes(productAttributes.filter(c => c.key !== productAttribute.key))}
+                        className="ml-auto"
+                        type="button"
+                    >
+                        X
+                    </Button>
+                </div>)
+            }
+            <Button
+                variant="destructive"
+                className="ml-auto"
+                type="button"
+                onClick={addAttribute}
             >
                 Add more
             </Button>

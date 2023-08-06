@@ -20,6 +20,13 @@ export const ProductSchema = z.object({
 
     })
   ).optional(),
+  attributes: z.array(
+    z.object({
+      attributeId: z.number().int().positive(),
+      value: z.string().min(1),
+
+    })
+  ).optional(),
   prices: z.array(
     z.object({
       label: z.string().min(1),

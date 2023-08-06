@@ -29,11 +29,20 @@ interface EditProductFormProps {
         id: number,
         name: string
     }[],
+    attributes: {
+        id: number,
+        name: string
+    }[],
     product:Product&any
 }
 interface ProductWithColorOrSize {
     id: number;
     extra: number,
+    key: string
+}
+interface ProductWithAttribute {
+    id: number;
+    value: string,
     key: string
 }
 interface ProductPrice {
@@ -70,7 +79,7 @@ const modules = {
     },
   }
 
-export default function EditProductForm({ categories, colors, sizes,product }: EditProductFormProps) {
+export default function EditProductForm({ categories, colors, sizes,product,attributes }: EditProductFormProps) {
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
     const [image, setImage] = useState<string>(product.image);
@@ -84,6 +93,13 @@ export default function EditProductForm({ categories, colors, sizes,product }: E
         product.colors.map((productColor:any)=>({
             id: productColor.colorId,
             extra: productColor.extra,
+            key: uuid()
+        }))
+    );
+    const [productAttributes, setProductAttributes] = useState<ProductWithAttribute[]>(
+        product.attributes.map((productAttribute:any)=>({
+            id: productAttribute.attributeId,
+            value: productAttribute.value,
             key: uuid()
         }))
     );
@@ -127,6 +143,17 @@ export default function EditProductForm({ categories, colors, sizes,product }: E
             {
                 id: 0,
                 extra: 0,
+                key: uuid()
+
+            }
+        ])
+    }
+    const addAttribute = () => {
+        setProductAttributes([
+            ...productAttributes,
+            {
+                id: 0,
+                value: "",
                 key: uuid()
 
             }
@@ -181,6 +208,10 @@ export default function EditProductForm({ categories, colors, sizes,product }: E
                 colors: productColors.map(color => ({
                     colorId: color.id,
                     extra: parseFloat(color.extra.toString())
+                })),
+                attributes: productAttributes.map(attribute => ({
+                    attributeId: attribute.id,
+                    value: attribute.value
                 })),
                 prices: productPrices.map(price => ({
                     label: price.label,
@@ -290,6 +321,67 @@ export default function EditProductForm({ categories, colors, sizes,product }: E
                 className="ml-auto"
                 type="button"
                 onClick={addColor}
+            >
+                Add more
+            </Button>
+        </FormItem>
+        <FormItem label="Attributes" message={errors.attributes?.message} >
+            {
+                productAttributes.map(productAttribute => <div key={productAttribute.key} className="flex gap-2 my-2">
+                    <Select
+                        className="w-1/2"
+                        defaultValue={
+                            {
+                            value:productAttribute.id,
+                            label: attributes.filter(attribute=>attribute.id==productAttribute.id)[0]?.name
+                            }
+                        }
+                        options={
+                            [
+                                {
+                                    value: 0,
+                                    label: "Select Attribute"
+                                },
+                                ...attributes.map(attribute => ({
+                                    value: attribute.id,
+                                    label: attribute.name
+                                }))
+                            ]
+                        }
+                        onChange={(val) => setProductAttributes(productAttributes.map(c => productAttribute.key == c.key ? {
+                            id: val?.value!,
+                            value: c.value,
+                            key: c.key
+                        } : c))}
+                    />
+                    <Input
+                        className="w-1/2"
+                        placeholder="Value"
+                        value={productAttribute.value}
+                        type="text"
+                        step="0.1"
+                        onChange={(e) => setProductAttributes(productAttributes.map(c => productAttribute.key == c.key ? {
+                            id: c.id,
+                            value: e.target.value,
+                            key: c.key
+                        } : c))
+                        }
+                    />
+                    <Button
+                        variant="destructive"
+                        onClick={() => setProductAttributes(productAttributes.filter(c => c.key !== productAttribute.key))}
+                        className="ml-auto"
+                        type="button"
+                    >
+                        X
+                    </Button>
+                </div>)
+            }
+            <Button
+                variant="destructive"
+                className="ml-auto"
+                type="button"
+                onClick={addAttribute}
             >
                 Add more
             </Button>
