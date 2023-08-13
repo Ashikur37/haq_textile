@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache"
 import slug from "slug"
 import { z } from "zod"
 
-import { deleteImageFromCloudinary } from "@/lib/cloudinary"
+// import { deleteImageFromCloudinary } from "@/lib/cloudinary"
 import { db } from "@/lib/db"
 import { ProductSchema } from "@/lib/validations/product"
 

@@ -4,7 +4,7 @@ import { z } from "zod"
 import { db } from "@/lib/db"
 import { imageSchema } from "@/lib/validations/image"
 import { revalidatePath } from "next/cache"
-import { deleteImageFromCloudinary } from "@/lib/cloudinary"
+// import { deleteImageFromCloudinary } from "@/lib/cloudinary"
 
 export async function addImageAction(input: z.infer<typeof imageSchema>) {
  const res= await db.image.create({
@@ -22,7 +22,7 @@ export async function deleteImageAction(id:number) {
       id
     }
   });
-  await  deleteImageFromCloudinary(image?.image!);
+  // await  deleteImageFromCloudinary(image?.image!);
   await db.image.delete({
     where:{
       id
